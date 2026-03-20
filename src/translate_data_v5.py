@@ -1,9 +1,8 @@
 # -*- coding: utf-8 -*-
 """
-IBM HR 员工流失数据集 - 汉化脚本 v5.0
+IBM HR 员工流失数据集 - 汉化脚本 v5.1
 ======================================
-基于 v4.0 优化，增加有序变量和二元变量的编码列，并添加婚姻状况、出差频率的编码列
-调薪幅度设置为百分比格式（原数值/100，显示为整数百分比，如11%）
+基于 v5.0 优化，增加 CSV 输出功能，便于 GitHub 预览数据
 
 功能：
 1. 将35个字段名翻译为更符合中文HR术语的命名（“教育程度”改为“学历”）
@@ -14,7 +13,8 @@ IBM HR 员工流失数据集 - 汉化脚本 v5.0
 6. 调薪幅度：将原始整数除以100，并设置为不带小数的百分比格式（如11→11%）
 7. 职级（JobLevel）为数值，仅翻译列名，不添加编码列
 8. 输出 Excel 文件，格式化为超级表（蓝色主题、自动列宽）
-9. 列顺序按国内阅读习惯及企业系统对接需求排列（员工编号为首列）
+9. 同时输出 CSV 文件（UTF-8 with BOM 编码），便于 GitHub 在线预览
+10. 列顺序按国内阅读习惯及企业系统对接需求排列（员工编号为首列）
 """
 
 import pandas as pd
@@ -28,6 +28,7 @@ from openpyxl.utils import get_column_letter
 INPUT_FILE = "data/WA_Fn-UseC_-HR-Employee-Attrition.csv"
 OUTPUT_DIR = "output"
 OUTPUT_EXCEL_FILE = os.path.join(OUTPUT_DIR, "IBM_HR_员工流失数据_本土化版.xlsx")
+OUTPUT_CSV_FILE = os.path.join(OUTPUT_DIR, "IBM_HR_员工流失数据_本土化版.csv")
 
 # ==================== 1. 字段名翻译映射（本土化优化版）====================
 COLUMN_TRANSLATION = {
@@ -316,7 +317,7 @@ def apply_excel_formatting(worksheet):
 
 def main():
     print("="*60)
-    print("IBM HR 员工流失数据集 - 汉化工具 v5.0")
+    print("IBM HR 员工流失数据集 - 汉化工具 v5.1")
     print("="*60)
     
     # 检查输入文件
@@ -422,6 +423,14 @@ def main():
         print("请确保已安装 openpyxl: pip install openpyxl")
         return
     
+    # 保存 CSV 文件（用于 GitHub 预览）
+    print(f"\n💾 步骤6: 保存 CSV 文件 - {OUTPUT_CSV_FILE}")
+    try:
+        df.to_csv(OUTPUT_CSV_FILE, index=False, encoding='utf-8-sig')
+        print("✅ CSV 文件保存成功（UTF-8 with BOM 编码，GitHub 可直接预览）")
+    except Exception as e:
+        print(f"❌ 保存 CSV 失败: {e}")
+    
     # 预览
     print("\n📊 数据预览 (前5行，关键列):")
     print("="*80)
@@ -437,8 +446,10 @@ def main():
         print(f"   - 离职人数: {attrition_rate.get('是', 0) * len(df):.0f}")
         print(f"   - 留任人数: {attrition_rate.get('否', 0) * len(df):.0f}")
     
-    print(f"\n✨ 完成！输出文件: {OUTPUT_EXCEL_FILE}")
-    print("\n📝 版本说明: v5.0")
+    print(f"\n✨ 完成！输出文件位于 {OUTPUT_DIR} 目录：")
+    print(f"   - Excel: {OUTPUT_EXCEL_FILE}")
+    print(f"   - CSV:   {OUTPUT_CSV_FILE}")
+    print("\n📝 版本说明: v5.1")
     print("   - 学历: 1->大专以下,2->大专,3->本科,4->硕士,5->博士")
     print("   - 专业（原教育领域）")
     print("   - 职级为数值，仅翻译列名，不添加编码列")
@@ -448,6 +459,7 @@ def main():
     print("   - 为婚姻状况、出差频率添加了因子化编码列（便于建模）")
     print("   - 调薪幅度已除以100并设置为不带小数的百分比格式（如11→11%）")
     print("   - 输出 Excel 格式（超级表样式：蓝色主题、微软雅黑、自适应列宽，表格名称 HRDATA）")
+    print("   - 同时输出 CSV 文件（UTF-8 with BOM 编码），便于 GitHub 在线预览")
     print("   - 员工编号置于首列，符合企业系统对接习惯")
     print("   - 其他列按国内HR阅读习惯排列")
 
