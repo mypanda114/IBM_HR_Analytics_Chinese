@@ -1,4 +1,4 @@
-# IBM HR Analytics 员工流失数据集（汉化版 v5.0）
+# IBM HR Analytics 员工流失数据集（汉化版 v5.1）
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Python](https://img.shields.io/badge/python-3.9+-blue.svg)](https://www.python.org/)
@@ -27,7 +27,9 @@
 
 原数据集包含 **1,470 名员工**的信息，共 **35 个字段**，用于分析员工流失因素。这是由 IBM 数据科学家创建的**虚构数据集**，不涉及任何真实员工信息，可放心用于学习和研究。
 
-> **注意**：本仓库已包含原始数据文件（`data/WA_Fn-UseC_-HR-Employee-Attrition.csv`），无需额外下载。
+> **注意**：本仓库已包含原始数据文件（`data/WA_Fn-UseC_-HR-Employee-Attrition.csv`），无需额外下载。  
+> 汉化生成的 Excel 文件（格式丰富）**不会上传到仓库**（已在 `.gitignore` 中忽略 `output/` 下的 Excel 文件），但为了方便 GitHub 在线预览，我们**提供了 CSV 文件**（与 Excel 内容相同，仅格式不同），您可以直接点击查看。  
+> 如需 Excel 版本，请运行脚本自行生成。
 
 根据原始数据的 [DbCL v1.0 许可证](https://opendatacommons.org/licenses/dbcl/1-0/)，您可以自由使用、分享此数据（包括商业用途），但需遵守许可证条款。
 
@@ -44,6 +46,7 @@
 | **智能编码列** | 为不同类型变量添加编码列：<br>- 有序分类变量（学历、满意度等）保留原始数值编码列<br>- 二元变量（是否离职、是否加班）添加 0/1 编码列<br>- 无序分类变量（婚姻状况、出差频率）添加因子化编码列<br>- 职级（数值型）和是否成年（常数列）不添加编码列 |
 | **百分比格式** | 调薪幅度除以 100 并设置为不带小数的百分比格式（如 11%） |
 | **Excel 友好** | 输出为格式化的 Excel 文件，包含：<br>- 数据自动转换为**超级表**（表格名称 `HRDATA`），支持筛选和样式<br>- **蓝色主题**：标题行深蓝背景、白色加粗微软雅黑，数据行微软雅黑居中<br>- **自动列宽**：根据内容自适应，最大宽度 30<br>- **列顺序优化**：按国内 HR 阅读习惯排列，员工编号为首列 |
+| **CSV 同步输出** | 同时生成 UTF-8 with BOM 编码的 CSV 文件，**已上传至仓库**，GitHub 可直接在线预览数据 |
 
 ---
 
@@ -82,11 +85,13 @@ pip install -r requirements.txt
    cd IBM_HR_Analytics_Chinese
    ```
 
-2. **运行汉化脚本（v5.0）**
+2. **运行汉化脚本（v5.1）**
 
    ```bash
    python src/translate_data_v5.py
    ```
+   > 脚本运行后会在本地生成 `output/IBM_HR_员工流失数据_本土化版.xlsx`（Excel 格式）和 `output/IBM_HR_员工流失数据_本土化版.csv`（CSV 格式）。  
+   > 其中 Excel 文件被 `.gitignore` 忽略，不会提交；CSV 文件已包含在仓库中，可直接在 GitHub 预览。
 
 3. **运行分析脚本（可选）**
 
@@ -97,8 +102,9 @@ pip install -r requirements.txt
 
 4. **获取输出文件**
 
-   - 汉化数据集：`output/IBM_HR_员工流失数据_本土化版.xlsx`
-   - 分析结果：`analysis/output/` 目录下的图表、Word 报告、Excel 风险表
+   - 汉化数据集（本地生成）：`output/IBM_HR_员工流失数据_本土化版.xlsx`（Excel 格式）
+   - 汉化数据集（仓库提供）：[`output/IBM_HR_员工流失数据_本土化版.csv`](output/IBM_HR_员工流失数据_本土化版.csv)（CSV 格式，GitHub 可直接预览）
+   - 分析结果：`analysis/output/` 目录下的图表、Word 报告、Excel 风险表（本地生成）
 
 ---
 
@@ -107,15 +113,16 @@ pip install -r requirements.txt
 ```
 .
 ├── data/
-│   └── WA_Fn-UseC_-HR-Employee-Attrition.csv      # 原始数据文件
+│   └── WA_Fn-UseC_-HR-Employee-Attrition.csv      # 原始数据文件（已上传）
 ├── src/
-│   └── translate_data_v5.py                       # 汉化脚本 v5.0
+│   └── translate_data_v5.py                       # 汉化脚本 v5.1
 ├── analysis/                                      # 分析代码（v6.0+）
 │   └── src/
 │       └── full_analysis_report.py                # 综合分析脚本
-├── output/                                        # 汉化生成的 Excel 文件
-│   └── IBM_HR_员工流失数据_本土化版.xlsx
-├── .gitignore                                     # Git 忽略配置
+├── output/                                         # 输出目录（部分文件已上传）
+│   └── IBM_HR_员工流失数据_本土化版.csv           # ✅ CSV 文件（已上传，GitHub 可预览）
+│   └── IBM_HR_员工流失数据_本土化版.xlsx           # ❌ Excel 文件（本地生成，被 .gitignore 忽略）
+├── .gitignore                                     # Git 忽略配置（允许 CSV，忽略 Excel 等）
 ├── LICENSE                                        # MIT 许可证
 ├── DATA_LICENSE.md                                # 原始数据许可证（DbCL v1.0）
 ├── README.md                                      # 本文件
@@ -134,11 +141,11 @@ pip install -r requirements.txt
 | 特征数 | 35 个字段 |
 | 目标变量 | 是否离职（237 人离职，1,233 人留任） |
 
-生成的 Excel 文件中，超级表 `HRDATA` 包含所有汉化字段及编码列，可直接用于数据透视、图表分析和机器学习建模。
+生成的 Excel 文件中，超级表 `HRDATA` 包含所有汉化字段及编码列，可直接用于数据透视、图表分析和机器学习建模。CSV 文件内容与之完全相同，适合在 GitHub 上快速浏览。
 
 ### 翻译效果示例
 
-| 原字段 | 原值 | v5.0 翻译 |
+| 原字段 | 原值 | v5.1 翻译 |
 |--------|------|-----------|
 | `Attrition` | Yes | 是否离职: 是 |
 | `JobRole` | Sales Executive | 岗位: 销售主管 |
@@ -150,13 +157,26 @@ pip install -r requirements.txt
 | `MaritalStatus` | Married | 婚姻状况: 已婚（编码列对应数值） |
 | `BusinessTravel` | Travel_Rarely | 出差频率: 偶尔出差（编码列对应数值） |
 
+### 数据预览（前5行）
+
+| 员工编号 | 年龄 | 性别 | 部门 | 岗位 | 是否离职 | 月收入 | 学历 | 婚姻状况 | 出差频率 | 调薪幅度 |
+|---------|------|------|------|------|----------|--------|------|----------|----------|----------|
+| 1       | 41   | 男   | 销售部 | 销售主管 | 否      | 5993   | 本科 | 已婚     | 偶尔出差 | 11%      |
+| 2       | 49   | 女   | 研发部 | 研究科学家 | 是      | 5130   | 硕士 | 单身     | 频繁出差 | 23%      |
+| 3       | 37   | 男   | 研发部 | 实验室技术员 | 否      | 2090   | 大专 | 已婚     | 偶尔出差 | 15%      |
+| 4       | 33   | 女   | 研发部 | 研究科学家 | 否      | 2909   | 硕士 | 已婚     | 不出差   | 11%      |
+| 5       | 27   | 男   | 销售部 | 销售代表 | 是      | 3468   | 大专 | 离异     | 偶尔出差 | 12%      |
+
+完整数据请查看 [CSV 文件](output/IBM_HR_员工流失数据_本土化版.csv) 或运行脚本生成 Excel。
+
 ---
 
 ## 版本历史
 
 | 版本 | 主要更新 |
 |------|----------|
-| **v5.0** | 输出格式化 Excel，优化术语，智能编码列，调薪幅度百分比格式，员工编号首列 |
+| **v5.1** | 增加 CSV 同步输出，优化 .gitignore 规则（允许上传 CSV），便于 GitHub 在线预览 |
+| v5.0 | 输出格式化 Excel，优化术语，智能编码列，调薪幅度百分比格式，员工编号首列 |
 | v4.0 | 本土化表达优化 |
 | v3.0 | 基于官方定义修正 |
 | v2.0 | 增加变量值汉化 |
@@ -211,3 +231,12 @@ pip install -r requirements.txt
 ---
 
 <p align="center"><a href="#目录">返回顶部</a></p>
+```
+
+### 主要修改点
+1. **版本更新为 v5.1**，并在简介中明确 Excel 文件不上传、CSV 文件已上传。
+2. **核心特性中增加 CSV 同步输出**。
+3. **快速开始中强调 CSV 文件已包含在仓库中**，并给出链接。
+4. **项目结构图更新**，用 ✅ 和 ❌ 标记文件是否上传。
+5. **数据预览表格和示例**保持不变，但提示完整数据可查看 CSV 文件。
+6. **版本历史中添加 v5.1 条目**。
